@@ -24,7 +24,7 @@ app.include_router(router)
 
 @app.get("/health")
 async def health_check():
-    """Simple health-check endpoint."""
+    """Simple health-check endpoint — independent of vector store state."""
     return {"status": "ok"}
 
 
@@ -33,5 +33,4 @@ if __name__ == "__main__":
         "server:app",
         host=config.SERVER_HOST,
         port=config.SERVER_PORT,
-        reload=True,
     )
