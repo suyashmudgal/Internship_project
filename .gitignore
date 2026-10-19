@@ -1,41 +1,28 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-dist/
-build/
-.eggs/
-
-# Virtual environment
+# Environment
+.env
 .venv/
 venv/
 env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Vector store data
+vectorstore/*
+!vectorstore/.gitkeep
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# Environment
-.env
-
-# Database
-*.db
+*~
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Testing
-.pytest_cache/
-htmlcov/
-.coverage
-
-# Alembic
-migrations/versions/__pycache__/
-
-# Agents
-.agents/
-.gemini/

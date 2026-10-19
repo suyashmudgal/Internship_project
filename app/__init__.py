@@ -1,1 +1,3 @@
-"""OPSiB Backend — Retail exception detection and task management."""
+"""
+PDF Vectorisation Pipeline - App Package
+"""
