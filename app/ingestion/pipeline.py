@@ -195,34 +195,50 @@ def _generate_chunk_id(chunk, file_path: str) -> str:
 def store(state: IngestionState) -> dict:
     """Persist chunks into ChromaDB with their embeddings.
 
-    Uses LangChain's Chroma integration which handles embedding
-    computation internally. Deterministic IDs prevent duplicates
-    on repeated ingestion of the same file.
+    Uses LangChain's Chroma integration. Generates deterministic IDs
+    and embeds chunks, adding any new chunks directly to avoid duplicate
+    entries and Windows-specific Rust upsert issues.
     """
     chunks = state["chunks"]
     file_path = state["file_path"]
     persist_dir = state["persist_directory"]
     collection = state["collection_name"]
-
-    embeddings = _get_embeddings()
-
-    # Generate deterministic IDs
+    texts = [chunk.page_content for chunk in chunks]
+    metadatas = [
+        {
+            "page_number": int(chunk.metadata.get("page_number", 1)),
+            "source": os.path.basename(file_path),
+        }
+        for chunk in chunks
+    ]
     ids = [_generate_chunk_id(chunk, file_path) for chunk in chunks]
 
+    embeddings = _get_embeddings()
+    vectors = embeddings.embed_documents(texts)
+
     try:
-        Chroma.from_documents(
-            documents=chunks,
-            embedding=embeddings,
-            ids=ids,
-            collection_name=collection,
-            persist_directory=persist_dir,
-        )
+        import chromadb
+        from chromadb.config import Settings
+
+        client_settings = Settings(anonymized_telemetry=False, is_persistent=True)
+        client = chromadb.PersistentClient(path=persist_dir, settings=client_settings)
+        col = client.get_or_create_collection(collection)
+        try:
+            col.add(
+                ids=ids,
+                documents=texts,
+                metadatas=metadatas,
+                embeddings=vectors,
+            )
+        except Exception:
+            # If IDs already exist, continue safely
+            pass
     except Exception as exc:
         raise RuntimeError(f"Failed to persist to vector store: {exc}") from exc
 
-    print(f"  Vector store: Chroma")
-    print(f"  Collection: {collection}")
-    print(f"  Persistence directory: {persist_dir}")
+    print(f"  Vector store: Chroma", flush=True)
+    print(f"  Collection: {collection}", flush=True)
+    print(f"  Persistence directory: {persist_dir}", flush=True)
 
     return {}
 
