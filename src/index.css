@@ -4,12 +4,329 @@
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: #030712;
-  color: #f8fafc;
-  overflow-x: hidden;
+/* ========================================================
+   THEME 1: PURE OLED BLACK (DARK MODE)
+   ======================================================== */
+html.theme-black,
+html:not(.theme-white) {
+  color-scheme: dark;
+  background-color: #000000;
+  color: #f4f4f5;
+}
+
+html.theme-black body,
+html:not(.theme-white) body {
+  background-color: #000000;
+  color: #f4f4f5;
+}
+
+/* Pure Black backgrounds */
+html.theme-black .bg-\[\#060913\],
+html:not(.theme-white) .bg-\[\#060913\] {
+  background-color: #000000 !important;
+}
+
+html.theme-black .bg-\[\#060913\]\/85,
+html:not(.theme-white) .bg-\[\#060913\]\/85 {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.theme-black [class*="bg-slate-950"],
+html:not(.theme-white) [class*="bg-slate-950"] {
+  background-color: #040406 !important;
+}
+
+html.theme-black [class*="bg-slate-900"],
+html:not(.theme-white) [class*="bg-slate-900"] {
+  background-color: #09090d !important;
+}
+
+html.theme-black [class*="border-slate-800"],
+html:not(.theme-white) [class*="border-slate-800"] {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.theme-black .hover\:border-slate-700:hover,
+html:not(.theme-white) .hover\:border-slate-700:hover {
+  border-color: rgba(6, 182, 212, 0.35) !important;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.08);
+}
+
+
+/* ========================================================
+   THEME 2: PURE CLEAN WHITE (HIGH CONTRAST & READABLE)
+   ======================================================== */
+html.theme-white {
+  color-scheme: light;
+  background-color: #ffffff;
+  color: #09090b;
+}
+
+html.theme-white body {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+
+/* Base containers */
+html.theme-white .bg-\[\#060913\] {
+  background-color: #ffffff !important;
+}
+
+/* Header */
+html.theme-white header,
+html.theme-white .bg-\[\#060913\]\/85 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* All Card & Panel Backgrounds in White Mode */
+html.theme-white [class*="bg-slate-900"] {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+}
+
+html.theme-white [class*="bg-slate-950"],
+html.theme-white [class*="bg-zinc-950"],
+html.theme-white [class*="bg-zinc-900"] {
+  background-color: #f8fafc !important;
+}
+
+html.theme-white [class*="bg-slate-800"] {
+  background-color: #f1f5f9 !important;
+}
+
+/* All Borders in White Mode */
+html.theme-white [class*="border-slate-800"],
+html.theme-white [class*="border-slate-700"],
+html.theme-white [class*="border-slate-900"],
+html.theme-white [class*="border-white\/"] {
+  border-color: #e2e8f0 !important;
+}
+
+html.theme-white .hover\:border-slate-700:hover,
+html.theme-white .hover\:border-sky-500\/40:hover {
+  border-color: #0284c7 !important;
+  box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.12);
+}
+
+/* --------------------------------------------------------
+   HIGH CONTRAST TYPOGRAPHY IN WHITE MODE
+   -------------------------------------------------------- */
+html.theme-white h1,
+html.theme-white h2,
+html.theme-white h3,
+html.theme-white h4,
+html.theme-white .text-white {
+  color: #09090b !important;
+}
+
+html.theme-white .text-slate-100 {
+  color: #0f172a !important;
+}
+
+html.theme-white .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.theme-white .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.theme-white .text-slate-400 {
+  color: #475569 !important;
+}
+
+html.theme-white .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.theme-white .text-zinc-200,
+html.theme-white .text-zinc-300,
+html.theme-white .text-zinc-400 {
+  color: #1e293b !important;
+}
+
+/* Accent Colors: High-contrast readable colors for Light mode */
+html.theme-white .text-sky-400,
+html.theme-white .text-sky-300,
+html.theme-white .text-sky-200 {
+  color: #0284c7 !important;
+}
+
+html.theme-white .text-cyan-400,
+html.theme-white .text-cyan-300 {
+  color: #0891b2 !important;
+}
+
+html.theme-white .text-indigo-400,
+html.theme-white .text-indigo-300 {
+  color: #4f46e5 !important;
+}
+
+html.theme-white .text-emerald-400,
+html.theme-white .text-emerald-300 {
+  color: #059669 !important;
+}
+
+html.theme-white .text-amber-400,
+html.theme-white .text-amber-300 {
+  color: #b45309 !important;
+}
+
+html.theme-white .text-rose-400 {
+  color: #be123c !important;
+}
+
+html.theme-white .text-slate-950 {
+  color: #020617 !important;
+}
+
+/* Gradient Headlines: Make high contrast & punchy */
+html.theme-white .text-transparent {
+  color: transparent !important;
+}
+
+html.theme-white .bg-clip-text {
+  background-image: linear-gradient(135deg, #0284c7 0%, #0891b2 50%, #4338ca 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* Hover state overrides */
+html.theme-white .hover\:text-white:hover {
+  color: #0284c7 !important;
+}
+
+html.theme-white .hover\:text-sky-300:hover,
+html.theme-white .hover\:text-sky-400:hover {
+  color: #0369a1 !important;
+}
+
+html.theme-white .hover\:bg-slate-800:hover,
+html.theme-white .hover\:bg-slate-800\/70:hover,
+html.theme-white .hover\:bg-slate-800\/80:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* Form inputs & controls in White Mode */
+html.theme-white input,
+html.theme-white select,
+html.theme-white textarea {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.theme-white input:focus,
+html.theme-white select:focus,
+html.theme-white textarea:focus {
+  border-color: #0284c7 !important;
+  outline: 2px solid rgba(2, 132, 199, 0.15) !important;
+}
+
+html.theme-white input::placeholder,
+html.theme-white textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Modals & Dialogs in White Mode */
+html.theme-white [role="dialog"] {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+}
+
+html.theme-white [role="dialog"] > div {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+}
+
+/* Buttons with rich backgrounds must keep high contrast text */
+html.theme-white .bg-sky-500,
+html.theme-white .bg-gradient-to-r {
+  color: #020617 !important;
+}
+
+/* Category filter tabs in White Mode */
+html.theme-white .bg-slate-900.border-slate-800 {
+  background-color: #ffffff !important;
+  color: #334155 !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.theme-white .bg-sky-500.text-slate-950 {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+html.theme-white .bg-sky-500.text-slate-950 span {
+  color: #ffffff !important;
+}
+
+/* Badges with light tinted backgrounds */
+html.theme-white .bg-sky-500\/10,
+html.theme-white .bg-sky-500\/15 {
+  background-color: rgba(2, 132, 199, 0.08) !important;
+  border-color: rgba(2, 132, 199, 0.25) !important;
+  color: #0284c7 !important;
+}
+
+html.theme-white .bg-emerald-500\/10,
+html.theme-white .bg-emerald-500\/15 {
+  background-color: rgba(5, 150, 105, 0.08) !important;
+  border-color: rgba(5, 150, 105, 0.25) !important;
+  color: #047857 !important;
+}
+
+html.theme-white .bg-amber-500\/10,
+html.theme-white .bg-amber-500\/15 {
+  background-color: rgba(217, 119, 6, 0.08) !important;
+  border-color: rgba(217, 119, 6, 0.25) !important;
+  color: #b45309 !important;
+}
+
+html.theme-white .bg-indigo-500\/10,
+html.theme-white .bg-indigo-500\/15 {
+  background-color: rgba(79, 70, 229, 0.08) !important;
+  border-color: rgba(79, 70, 229, 0.25) !important;
+  color: #4338ca !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.theme-white ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+html.theme-white ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+html:not(.theme-white) ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+html:not(.theme-white) ::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+.glow-card {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-card:hover {
+  transform: translateY(-2px);
 }

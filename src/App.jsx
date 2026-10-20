@@ -43,7 +43,9 @@ import {
   RefreshCw,
   FolderGit2,
   Star,
-  Play
+  Play,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 // ==========================================
@@ -705,8 +707,10 @@ const AI_ASSISTANT_PRESETS = [
 // ==========================================
 // SUBTLE NEURAL NETWORK CANVAS BACKGROUND
 // ==========================================
-function NeuralBackground() {
+function NeuralBackground({ theme = 'black' }) {
   const canvasRef = useRef(null);
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -739,6 +743,7 @@ function NeuralBackground() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
+      const isDark = themeRef.current === 'black';
 
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
@@ -752,7 +757,7 @@ function NeuralBackground() {
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+        ctx.fillStyle = isDark ? 'rgba(6, 182, 212, 0.45)' : 'rgba(2, 132, 199, 0.35)';
         ctx.fill();
 
         for (let j = i + 1; j < nodes.length; j++) {
@@ -765,8 +770,10 @@ function NeuralBackground() {
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(other.x, other.y);
-            const alpha = (1 - dist / 155) * 0.12;
-            ctx.strokeStyle = `rgba(99, 102, 241, ${alpha})`;
+            const alpha = (1 - dist / 155) * 0.14;
+            ctx.strokeStyle = isDark
+              ? `rgba(99, 102, 241, ${alpha})`
+              : `rgba(79, 70, 229, ${alpha * 0.8})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -1647,6 +1654,44 @@ export default function App() {
   const [activeProjectModal, setActiveProjectModal] = useState(null);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
+  // Theme Management: 'black' (Pure OLED Pitch Black) vs 'white' (Pure Clean White)
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('portfolio_theme') || 'black';
+    } catch {
+      return 'black';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('portfolio_theme', theme);
+    } catch {}
+    if (theme === 'white') {
+      document.documentElement.classList.add('theme-white');
+      document.documentElement.classList.remove('theme-black');
+    } else {
+      document.documentElement.classList.add('theme-black');
+      document.documentElement.classList.remove('theme-white');
+    }
+  }, [theme]);
+
+  // Keyboard shortcut: Press 'T' to toggle theme instantly
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      if (e.key === 't' || e.key === 'T') {
+        setTheme((prev) => (prev === 'black' ? 'white' : 'black'));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'black' ? 'white' : 'black'));
+  };
+
   // Live GitHub Public Data State (Authentic API fetch + verified fallback)
   const [githubProfile, setGithubProfile] = useState(null);
   const [githubRepos, setGithubRepos] = useState(FALLBACK_GITHUB_REPOS);
@@ -1787,9 +1832,9 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#060913] text-slate-100 selection:bg-sky-500 selection:text-slate-950 relative overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-[#060913] text-slate-100 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden font-sans transition-colors duration-300">
       {/* Subtle Animated Neural Node Canvas */}
-      <NeuralBackground />
+      <NeuralBackground theme={theme} />
 
       {/* Subtle Top Radial Spotlight */}
       <div
@@ -1837,8 +1882,33 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Right CTA Buttons */}
+          {/* Right CTA Buttons & Theme Toggle */}
           <div className="hidden sm:flex items-center gap-2.5">
+            {/* Theme Toggle Button (Pure OLED Black <-> Pure White) */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === 'black' ? 'Pure White' : 'Pure OLED Black'} mode`}
+              title="Toggle White / Pure Black (Shortcut: Press 'T')"
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition-all duration-300 shadow-sm ${
+                theme === 'black'
+                  ? 'border-white/10 bg-zinc-900/90 text-zinc-200 hover:border-cyan-400/50 hover:text-white'
+                  : 'border-slate-200 bg-white text-slate-800 hover:border-cyan-500 hover:text-cyan-600'
+              }`}
+            >
+              {theme === 'black' ? (
+                <>
+                  <Sun className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                  <span className="hidden md:inline text-[11px] font-semibold">White Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-3.5 h-3.5 text-indigo-500" />
+                  <span className="hidden md:inline text-[11px] font-semibold">Pure Black</span>
+                </>
+              )}
+            </button>
+
             <a
               href={PERSONAL_INFO.github}
               target="_blank"
@@ -1851,7 +1921,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setResumeModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition shadow-lg shadow-sky-500/20"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-cyan-500/20"
             >
               <FileText className="w-3.5 h-3.5" />
               Resume
@@ -1884,27 +1954,49 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <div className="pt-2 flex items-center gap-2 border-t border-slate-800/80">
+            <div className="pt-2 flex flex-col gap-2 border-t border-slate-800/80">
               <button
                 type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setResumeModalOpen(true);
-                }}
-                className="flex-1 py-2.5 rounded-xl bg-sky-500 text-slate-950 font-semibold text-xs flex items-center justify-center gap-1.5"
+                onClick={toggleTheme}
+                className="w-full py-2 px-3 rounded-xl border border-slate-700 bg-slate-900 text-xs font-mono text-slate-200 flex items-center justify-between"
               >
-                <FileText className="w-4 h-4" />
-                View / Download Resume
+                <span className="flex items-center gap-2">
+                  {theme === 'black' ? (
+                    <>
+                      <Sun className="w-4 h-4 text-amber-400" />
+                      <span>Switch to Pure White Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-4 h-4 text-indigo-400" />
+                      <span>Switch to Pure OLED Black</span>
+                    </>
+                  )}
+                </span>
+                <span className="text-[10px] text-slate-400 font-mono">T key</span>
               </button>
-              <a
-                href={PERSONAL_INFO.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-medium flex items-center gap-1.5"
-              >
-                <Github className="w-4 h-4" />
-                GitHub
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setResumeModalOpen(true);
+                  }}
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5"
+                >
+                  <FileText className="w-4 h-4" />
+                  View / Download Resume
+                </button>
+                <a
+                  href={PERSONAL_INFO.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-medium flex items-center gap-1.5"
+                >
+                  <Github className="w-4 h-4" />
+                  GitHub
+                </a>
+              </div>
             </div>
           </div>
         )}
@@ -3168,6 +3260,35 @@ export default function App() {
       <PortfolioAIAssistant
         onOpenProject={(proj) => setActiveProjectModal(proj)}
       />
+
+      {/* Floating Theme Quick Toggle Switch (Bottom Left) */}
+      <button
+        type="button"
+        onClick={toggleTheme}
+        aria-label="Toggle White or Pure Black theme"
+        title="Toggle Theme: Pure OLED Black / Pure White (Shortcut: Press 'T')"
+        className={`fixed bottom-5 left-5 z-40 p-3 rounded-2xl border backdrop-blur-xl shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 flex items-center gap-2 group ${
+          theme === 'black'
+            ? 'border-white/10 bg-zinc-950/90 text-amber-400 hover:border-amber-400/50 shadow-black'
+            : 'border-slate-300 bg-white/95 text-indigo-600 hover:border-indigo-400 shadow-slate-300'
+        }`}
+      >
+        {theme === 'black' ? (
+          <>
+            <Sun className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+            <span className="hidden sm:inline text-xs font-mono font-semibold text-zinc-200">
+              White
+            </span>
+          </>
+        ) : (
+          <>
+            <Moon className="w-4 h-4 group-hover:-rotate-12 transition-transform duration-300" />
+            <span className="hidden sm:inline text-xs font-mono font-semibold text-slate-800">
+              Pure Black
+            </span>
+          </>
+        )}
+      </button>
     </div>
   );
 }
