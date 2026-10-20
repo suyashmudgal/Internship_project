@@ -9,6 +9,7 @@ and prints progress information.
 """
 
 import argparse
+import os
 import sys
 
 from app.ingestion.pipeline import run_ingestion
@@ -38,13 +39,14 @@ def main() -> None:
         print(f"\n  ERROR: {exc}", file=sys.stderr)
         sys.exit(1)
 
-    print()
-    print("Ingestion completed successfully.")
-    print(f"  Pages:    {result['num_pages']}")
-    print(f"  Chunks:   {result['num_chunks']}")
-    print(f"  Model:    {result['embedding_model']}")
-    print(f"  Store:    Chroma ({result['persist_directory']})")
-    print()
+    print(flush=True)
+    print("Ingestion completed successfully.", flush=True)
+    print(f"  Pages:    {result['num_pages']}", flush=True)
+    print(f"  Chunks:   {result['num_chunks']}", flush=True)
+    print(f"  Model:    {result['embedding_model']}", flush=True)
+    print(f"  Store:    Chroma ({result['persist_directory']})", flush=True)
+    print(flush=True)
+    os._exit(0)
 
 
 if __name__ == "__main__":

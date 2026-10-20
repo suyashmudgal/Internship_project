@@ -105,7 +105,7 @@ def load(state: IngestionState) -> dict:
         raw_page = doc.metadata.get("page", 0)
         doc.metadata["page_number"] = int(raw_page) + 1
 
-    print(f"  Loaded pages: {len(documents)}")
+    print(f"  Loaded pages: {len(documents)}", flush=True)
 
     return {
         "documents": documents,
@@ -140,7 +140,7 @@ def split(state: IngestionState) -> dict:
             "The PDF may contain only images or non-extractable content."
         )
 
-    print(f"  Created chunks: {len(chunks)}")
+    print(f"  Created chunks: {len(chunks)}", flush=True)
 
     return {
         "chunks": chunks,
@@ -168,7 +168,7 @@ def embed(state: IngestionState) -> dict:
     except Exception as exc:
         raise RuntimeError(f"Embedding model failed to initialize: {exc}") from exc
 
-    print(f"  Embedding model: {config.EMBEDDING_MODEL}")
+    print(f"  Embedding model: {config.EMBEDDING_MODEL}", flush=True)
 
     return {
         "embedding_model": config.EMBEDDING_MODEL,
