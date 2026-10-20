@@ -88,7 +88,7 @@ const STATS_DATA = [
     accent: 'from-cyan-400 to-teal-500'
   },
   {
-    value: '50+',
+    value: '200+',
     label: 'LeetCode Problems',
     sub: 'Solved in C++ (DSA)',
     icon: Code2,
@@ -208,12 +208,20 @@ const SKILL_CATEGORIES = [
   }
 ];
 
+const PROJECT_CATEGORY_TABS = [
+  'All Projects',
+  'GenAI & Agentic Systems',
+  'Data Analysis & EDA',
+  'Full-Stack & Product',
+  'Machine Learning & NLP'
+];
+
 const PROJECTS_DATA = [
   {
     id: 'docchat-rag',
     title: 'DocChat AI — Multi-Tenant RAG System',
     subtitle: 'Retrieval-Augmented Generation with User-Level Data Isolation',
-    category: 'Generative AI & Backend',
+    category: 'GenAI & Agentic Systems',
     badge: 'Flagship Architecture',
     date: 'Production-Grade Pipeline',
     description:
@@ -230,15 +238,15 @@ const PROJECTS_DATA = [
       'RAG'
     ],
     features: [
-      'Document upload & automated chunking',
-      'Document processing & vector embeddings',
-      'Vector search & semantic retrieval',
+      'Document upload & automated processing',
+      'Embeddings & high-dimensional vector search',
+      'Semantic retrieval with top-k context ranking',
       'LLM-based contextual answer generation (Groq API)',
       'User authentication & PostgreSQL user synchronization',
-      'Strict user-wise data & ChromaDB metadata isolation',
+      'Strict user-wise data isolation (ChromaDB metadata isolation)',
       'Persistent multi-turn chat memory',
       'Low-latency streaming responses',
-      'Secure document deletion & index cleanup'
+      'Secure document deletion & vector index cleanup'
     ],
     problem:
       'Many standard RAG prototypes store all uploaded document chunks in a flat, shared vector space. In multi-user scenarios, this creates severe privacy risks where semantic retrieval can inadvertently leak context across different users or leave orphaned vectors when documents are deleted.',
@@ -262,102 +270,207 @@ const PROJECTS_DATA = [
     ],
     github: 'https://github.com/suyashmudgal/RAG',
     backendUrl: 'https://github.com/suyashmudgal/RAG/tree/main/backend',
-    liveDemo: null
+    liveDemo: null,
+    repoKeywords: ['rag', 'docchat']
   },
   {
     id: 'multi-agent-research',
-    title: 'Multi-Agent Research System',
-    subtitle: 'Collaborative Agentic AI Workflow for Autonomous Synthesis',
-    category: 'Agentic AI',
-    badge: 'Multi-Agent System',
-    date: 'Agentic Architecture',
+    title: 'Khoj AI — Multi-Agent Research System',
+    subtitle: 'Collaborative 4-Stage Agentic AI Workflow for Autonomous Synthesis',
+    category: 'GenAI & Agentic Systems',
+    badge: 'Live Agentic App',
+    date: 'Deployed on Streamlit',
     description:
-      'An AI research system designed around multiple specialized agents that collaborate to research, process, and synthesize information.',
+      'A four-stage multi-agent AI research system designed around specialized autonomous agents that collaborate to research, process, verify, and synthesize citation-backed reports.',
     highlightNote:
-      'Decomposes complex user queries across specialized autonomous agents using structured state transitions from initial research to final synthesis.',
+      'Live deployed agentic workflow on Streamlit (Khoj AI) that decomposes complex queries across specialized LangGraph & Tavily research agents.',
     technologies: [
       'Python',
       'LLMs',
       'Agentic AI',
       'LangGraph',
-      'Multi-Agent Architecture'
+      'LangChain',
+      'Tavily',
+      'Streamlit'
     ],
     features: [
-      'Specialized multi-agent role decomposition',
-      'Autonomous query planning & research execution',
-      'Structured inter-agent state management via LangGraph',
-      'Information filtering, verification & processing pipeline',
-      'Cohesive synthesis into structured research reports'
+      'Four-stage specialized multi-agent role decomposition',
+      'Autonomous web research & evidence gathering via Tavily',
+      'Structured inter-agent state management via LangGraph & LangChain',
+      'Information filtering, verification & context processing pipeline',
+      'Cohesive synthesis into citation-backed research reports',
+      'Interactive Streamlit web interface for real-time agent execution'
     ],
     problem:
       'Single-prompt LLM calls often struggle with deep, multi-faceted research queries—suffering from shallow coverage, unverified reasoning, or disorganized output when asked to gather and synthesize complex topics.',
     solution:
-      'Designed an agentic workflow using Python and LangGraph where specialized agents collaborate sequentially and iteratively: decomposing the user query, gathering domain knowledge, processing findings, and synthesizing a comprehensive final answer.',
+      'Designed Khoj AI, a four-stage agentic workflow using Python, LangGraph, LangChain, and Tavily where specialized agents collaborate sequentially and iteratively: decomposing the user query, gathering live evidence, processing findings, and synthesizing a citation-backed final answer.',
     challenges:
-      'Orchestrating clean state handoffs between research and synthesis agents while preventing redundant reasoning loops and preserving key context across agent boundaries.',
+      'Orchestrating clean state handoffs between research and synthesis agents while preventing redundant reasoning loops and preserving source citations across agent boundaries.',
     outcome:
-      'A modular multi-agent pipeline that reliably transforms open-ended user queries into structured, synthesized insights through coordinated agent collaboration.',
+      'A live, production-accessible multi-agent research application (khojai.streamlit.app) that transforms open-ended user queries into structured, citation-backed technical reports.',
     architectureFlow: [
       { step: 'User Query', detail: 'Complex Research Prompt' },
-      { step: 'Research Agents', detail: 'Multi-Angle Information Gathering' },
-      { step: 'Information Processing', detail: 'Filtering, Structuring & Context Validation' },
+      { step: 'Research Agents', detail: 'Tavily & Multi-Angle Evidence Gathering' },
+      { step: 'Information Processing', detail: 'Filtering, Verification & Structuring' },
       { step: 'Synthesis', detail: 'Cross-Agent Aggregation & Reasoning' },
-      { step: 'Final Answer', detail: 'Structured Comprehensive Output' }
+      { step: 'Final Citation-Backed Answer', detail: 'Verified Report on Streamlit UI' }
     ],
     github: 'https://github.com/suyashmudgal/Multi-agent-research-system-main',
     backendUrl: null,
-    liveDemo: null
+    liveDemo: 'https://khojai.streamlit.app/',
+    repoKeywords: ['multi-agent', 'khoj']
   },
   {
     id: 'ai-data-explorer',
     title: 'AI Data Explorer',
-    subtitle: 'Automated Exploratory Data Analysis & Visualization Platform',
-    category: 'Data Science & Analytics',
-    badge: 'Live Web App',
+    subtitle: 'Automated Exploratory Data Analysis & Statistical Profiling Platform',
+    category: 'Data Analysis & EDA',
+    badge: 'Live EDA Platform',
     date: 'Deployed on Streamlit',
     description:
-      'An automated exploratory data analysis platform that helps users understand datasets through automated analysis and visualizations.',
+      'An automated exploratory data analysis (EDA) platform that helps users inspect, clean, and understand datasets through automated statistical profiling and interactive visualizations.',
     highlightNote:
-      'Turns raw tabular datasets into interactive statistical profiles, missing-value diagnostics, and correlation heatmaps in seconds.',
-    technologies: ['Python', 'Pandas', 'Matplotlib', 'Streamlit', 'Data Science'],
+      'Turns raw CSV/Excel datasets into interactive statistical profiles, missing-value imputation insights, and correlation heatmaps in seconds.',
+    technologies: [
+      'Python',
+      'Pandas',
+      'NumPy',
+      'Matplotlib',
+      'Streamlit',
+      'Data Science'
+    ],
     features: [
-      'Direct dataset upload (CSV / tabular data)',
-      'Automated Exploratory Data Analysis (EDA)',
-      'Comprehensive data profiling & schema inspection',
-      'Missing value analysis & data quality diagnostics',
-      'Automated statistical summaries',
-      'Dynamic visual distributions & Matplotlib charts',
-      'Feature correlation analysis',
-      'Interactive, user-friendly dashboard'
+      'Dataset upload supporting CSV & Excel tabular formats',
+      'Automated Exploratory Data Analysis (EDA) & schema profiling',
+      'Missing value analysis & imputation insights',
+      'Comprehensive statistical summaries (mean, median, skewness, IQR)',
+      'Feature distribution plots & correlation heatmaps',
+      'Interactive, user-friendly Streamlit dashboard'
     ],
     problem:
       'Initial exploratory data analysis often requires writing repetitive boilerplate code in notebooks for every new dataset just to inspect data types, missing values, distributions, and correlations.',
     solution:
-      'Built an interactive Streamlit application powered by Pandas and Matplotlib that automates the entire profiling workflow upon dataset upload, presenting instant visual diagnostics and statistical summaries.',
+      'Built an interactive Streamlit application powered by Python, Pandas, NumPy, and Matplotlib that automates the entire profiling workflow upon dataset upload, presenting instant visual diagnostics and statistical summaries.',
     challenges:
-      'Handling diverse dataset schemas, mixed column types, and missing values gracefully without breaking visualization pipelines.',
+      'Handling diverse dataset schemas, mixed column types, and high missing-value ratios gracefully without breaking visualization pipelines.',
     outcome:
-      'A live, accessible web application that accelerates dataset understanding and exploratory analysis for data science workflows.',
+      'A live, accessible web application (aidataexplorer.streamlit.app) that accelerates dataset understanding and exploratory analysis for data science workflows.',
     architectureFlow: [
-      { step: 'Dataset Upload', detail: 'User Uploads Raw CSV Data' },
-      { step: 'Pandas Profiling Engine', detail: 'Schema, Types & Null Diagnostics' },
-      { step: 'Statistical Computation', detail: 'Descriptive Stats & Correlations' },
-      { step: 'Visual Renderer', detail: 'Matplotlib Charts & Distributions' },
-      { step: 'Interactive Dashboard', detail: 'Streamlit UI Exploration' }
+      { step: 'Dataset Upload', detail: 'User Uploads CSV / Excel Data' },
+      { step: 'Pandas & NumPy Profiler', detail: 'Schema, Types & Null Diagnostics' },
+      { step: 'Imputation & Stats Engine', detail: 'Summary Stats & Missing Value Insights' },
+      { step: 'Visual Renderer', detail: 'Distributions & Correlation Heatmaps' },
+      { step: 'Interactive Dashboard', detail: 'Live Exploration on Streamlit' }
     ],
-    github: 'https://github.com/suyashmudgal',
+    github: 'https://github.com/suyashmudgal/Streamlit-project2',
     backendUrl: null,
-    liveDemo: 'https://aidataexplorer.streamlit.app/'
+    liveDemo: 'https://aidataexplorer.streamlit.app/',
+    repoKeywords: ['aidataexplorer', 'data-explorer', 'data_explorer', 'streamlit-project2']
+  },
+  {
+    id: 'indian-startup-analysis',
+    title: 'Indian Startup Ecosystem & Funding Analysis',
+    subtitle: 'Interactive Data Analytics on Investment Trends, Unicorns & Startup Hubs',
+    category: 'Data Analysis & EDA',
+    badge: 'Live Analytics App',
+    date: 'Deployed on Streamlit',
+    description:
+      'An interactive data analytics platform analyzing Indian startup funding trends, investor networks, high-growth sectors, startup hubs, and year-on-year investment patterns.',
+    highlightNote:
+      'Delivers multi-dimensional drilldowns across Indian startup hubs (Bengaluru, Delhi-NCR, Mumbai), funding stages, and investor portfolios.',
+    technologies: [
+      'Python',
+      'Pandas',
+      'NumPy',
+      'Matplotlib',
+      'Plotly / Seaborn',
+      'Streamlit',
+      'Data Analytics'
+    ],
+    features: [
+      'Overall year-on-year & month-on-month startup funding trend analysis',
+      'Top startup hubs breakdown (Bengaluru, Delhi-NCR, Mumbai, etc.)',
+      'Sector-wise investment distribution across FinTech, EdTech, SaaS & AI',
+      'Stage-wise funding insights (Seed, Series A–F, Late Stage, Debt)',
+      'Active investor portfolio drilldowns & startup-specific lookup',
+      'Interactive Streamlit visualizations & custom filtering'
+    ],
+    problem:
+      'Raw startup funding datasets contain noisy valuations, inconsistent city/sector naming conventions, and complex multi-investor records that obscure macro investment patterns.',
+    solution:
+      'Engineered an end-to-end data cleaning and visual analytics pipeline using Pandas, NumPy, Matplotlib, and Streamlit that standardizes Indian startup funding records and exposes interactive macro and micro drilldowns.',
+    challenges:
+      'Cleaning inconsistent funding amounts, normalizing city names (e.g., Bangalore vs. Bengaluru, Gurgaon vs. Gurugram), and structuring multi-dimensional views that remain responsive in the browser.',
+    outcome:
+      'A live interactive analytics dashboard (startupanalysisindia.streamlit.app) showcasing real-world data wrangling, storytelling, and business intelligence capabilities.',
+    architectureFlow: [
+      { step: 'Funding Dataset Ingestion', detail: 'Raw Indian Startup Funding Records' },
+      { step: 'Data Wrangling & Cleaning', detail: 'Standardizing Hubs, Sectors & Valuations' },
+      { step: 'Aggregation Engine', detail: 'YoY Trends, Stage & Investor Grouping' },
+      { step: 'Visual Analytics', detail: 'Interactive Charts & Sector Breakdowns' },
+      { step: 'Streamlit BI Dashboard', detail: 'Live Drilldowns by Startup & Investor' }
+    ],
+    github: 'https://github.com/suyashmudgal/streamlit-project',
+    backendUrl: null,
+    liveDemo: 'https://startupanalysisindia.streamlit.app/',
+    repoKeywords: ['startup', 'startupanalysis', 'funding', 'streamlit-project']
+  },
+  {
+    id: 'cardmakers-library',
+    title: 'CardMakers — Digital ID & Library Membership Solution',
+    subtitle: 'QR-Verified Digital Membership & Study Library Management Platform',
+    category: 'Full-Stack & Product',
+    badge: 'Active Development / WIP',
+    statusNote: 'Actively Building • New Modules in Progress',
+    date: 'Deployed on Vercel',
+    description:
+      'A digital ID card and QR-based membership management solution tailored for study libraries, gyms, and local institutions to automate member onboarding, digital card generation, and verification.',
+    highlightNote:
+      'Live on Vercel with instant QR-enabled digital library card generation; actively expanding with automated attendance and subscription tracking modules.',
+    technologies: [
+      'React / Next.js',
+      'Tailwind CSS',
+      'JavaScript',
+      'QR Verification',
+      'Vercel'
+    ],
+    features: [
+      'Instant digital library & institutional membership card generation',
+      'Custom organization branding & structured member profiles',
+      'Dynamic QR code integration for rapid check-in & identity verification',
+      'Exportable and print-ready high-resolution card layouts',
+      'Actively expanding with member attendance & subscription tracking modules'
+    ],
+    problem:
+      'Local study libraries, reading rooms, and membership centers often rely on manual paper registers or static physical cards that are slow to issue, easy to lose, and lack quick verification.',
+    solution:
+      'Built CardMakers (deployed on Vercel) to streamline member onboarding with instant, customizable digital ID cards embedded with verification QR codes, designed specifically for study libraries and local organizations.',
+    challenges:
+      'Ensuring crisp, responsive card rendering across devices while maintaining accurate QR code generation and preparing a modular architecture for upcoming subscription management features.',
+    outcome:
+      'A live product prototype (cardmakers.vercel.app) currently under active iterative expansion to become a full-suite study library management solution.',
+    architectureFlow: [
+      { step: 'Member Onboarding', detail: 'Input Student / Library Member Details' },
+      { step: 'Custom Branding Engine', detail: 'Apply Library Theme & Validity Dates' },
+      { step: 'QR Code Generator', detail: 'Embed Unique Verification Payload' },
+      { step: 'Live Card Preview', detail: 'Instant Responsive ID Card Rendering' },
+      { step: 'Export & Library Management', detail: 'Print/Download + Upcoming Attendance Sync' }
+    ],
+    github: 'https://github.com/suyashmudgal/Library-solution',
+    backendUrl: null,
+    liveDemo: 'https://cardmakers.vercel.app/',
+    repoKeywords: ['library-solution', 'cardmaker', 'card-maker', 'library', 'id-card']
   },
   {
     id: 'info-trunk',
     title: 'Info Trunk',
     subtitle: 'Knowledge Management & Digital Resource Discovery Platform',
-    category: 'Product Engineering',
+    category: 'Full-Stack & Product',
     badge: '1K+ Visitors • 5.5K+ Views',
     date: 'Dec 2025 – Present',
     description:
-      'A knowledge management platform for organizing, searching, and managing digital resources.',
+      'A centralized knowledge management platform for organizing, searching, and managing digital resources with real user traction.',
     highlightNote:
       'Real-world user adoption with 1K+ visitors, 5.5K+ page views, and an average session duration of ~5 minutes.',
     technologies: [
@@ -369,7 +482,7 @@ const PROJECTS_DATA = [
     features: [
       'Centralized digital resource management',
       'Fast search, categorization, and organization',
-      'Integrated analytics dashboard tracking platform usage',
+      'Built-in analytics dashboard tracking platform usage',
       '1K+ unique visitors with strong organic retention',
       '5.5K+ total page views across curated resources',
       '~5-minute average session duration demonstrating high utility'
@@ -395,17 +508,18 @@ const PROJECTS_DATA = [
     ],
     github: null,
     backendUrl: null,
-    liveDemo: null
+    liveDemo: null,
+    repoKeywords: ['infotrunk', 'info-trunk']
   },
   {
     id: 'fake-news-detection',
     title: 'Fake News Detection System',
     subtitle: 'NLP & Classical Machine Learning Classification Pipeline',
-    category: 'NLP & Machine Learning',
+    category: 'Machine Learning & NLP',
     badge: 'NLP + Flask App',
     date: 'End-to-End ML System',
     description:
-      'An NLP-based machine learning system designed to classify news as real or potentially fake.',
+      'An NLP-based machine learning system designed to classify news articles as real or potentially fake using classical text vectorization and linear classifiers.',
     highlightNote:
       'Combines TF-IDF vectorization with Logistic Regression and Passive Aggressive Classifiers inside an authenticated Flask dashboard.',
     technologies: [
@@ -417,12 +531,11 @@ const PROJECTS_DATA = [
       'Flask'
     ],
     features: [
-      'Automated NLP text preprocessing & cleaning pipeline',
+      'Text preprocessing & tokenization pipeline',
       'TF-IDF (Term Frequency–Inverse Document Frequency) feature extraction',
       'Dual ML classification (Logistic Regression & Passive Aggressive Classifier)',
-      'Interactive news verification & prediction interface',
-      'User dashboard for analysis history',
-      'User authentication workflow'
+      'Interactive prediction interface for real-time news verification',
+      'Analytics dashboard & user authentication workflow'
     ],
     problem:
       'Rapid spread of unverified online articles requires automated natural language processing tools capable of analyzing linguistic patterns and classifying text credibility.',
@@ -439,9 +552,10 @@ const PROJECTS_DATA = [
       { step: 'ML Classifiers', detail: 'Logistic Regression & Passive Aggressive' },
       { step: 'Flask Dashboard', detail: 'Authenticated Prediction Interface' }
     ],
-    github: 'https://github.com/suyashmudgal',
+    github: 'https://github.com/suyashmudgal?tab=repositories',
     backendUrl: null,
-    liveDemo: null
+    liveDemo: null,
+    repoKeywords: ['fake-news', 'fakenews', 'news-detection']
   }
 ];
 
@@ -498,10 +612,10 @@ const ACHIEVEMENTS_DATA = [
     accent: 'border-sky-500/30 bg-sky-500/5 text-sky-300'
   },
   {
-    title: 'Solved 50+ LeetCode Problems in C++',
+    title: 'Solved 200+ LeetCode Problems in C++',
     category: 'Algorithmic Problem Solving',
     description:
-      'Consistently practiced data structures and algorithms using C++, strengthening core foundations in memory efficiency, time complexity, and logical problem solving.',
+      'Solved 200+ data structures and algorithms problems on LeetCode using C++, strengthening core foundations in memory efficiency, time complexity, and competitive problem solving.',
     icon: Code2,
     accent: 'border-indigo-500/30 bg-indigo-500/5 text-indigo-300'
   }
@@ -554,17 +668,17 @@ const FALLBACK_GITHUB_REPOS = [
     id: 'multi-agent-repo',
     name: 'Multi-agent-research-system-main',
     description:
-      'Collaborative multi-agent AI research system designed to research, process, and synthesize complex queries using LangGraph and Python.',
+      'Khoj AI — Collaborative four-stage multi-agent AI research system designed to research, process, and synthesize citation-backed reports using LangGraph, Tavily, and Streamlit.',
     html_url: 'https://github.com/suyashmudgal/Multi-agent-research-system-main',
     language: 'Python',
-    topics: ['agentic-ai', 'langgraph', 'multi-agent-systems', 'python', 'llm']
+    topics: ['agentic-ai', 'langgraph', 'multi-agent-systems', 'python', 'streamlit']
   }
 ];
 
 const AI_ASSISTANT_PRESETS = [
   {
     q: 'What does Suyash build?',
-    a: 'Suyash builds production-oriented Generative AI applications, Retrieval-Augmented Generation (RAG) systems with strict user-level data isolation, LangGraph multi-agent research pipelines, automated EDA platforms, and NLP machine learning systems.'
+    a: 'Suyash builds production-oriented Generative AI applications, Retrieval-Augmented Generation (RAG) systems with strict user-level data isolation, Khoj AI (LangGraph multi-agent research pipelines), automated EDA & startup analytics platforms, full-stack digital library solutions (CardMakers), and NLP systems.'
   },
   {
     q: 'Tell me about the DocChat RAG architecture',
@@ -572,19 +686,19 @@ const AI_ASSISTANT_PRESETS = [
   },
   {
     q: 'What are his technical skills?',
-    a: '• Generative AI: RAG, LangGraph, LlamaIndex, AutoGen, LangSmith, Embeddings, Semantic Search, Prompt Engineering\n• AI/ML: Python, PyTorch, TensorFlow, Keras, Scikit-Learn, Hugging Face, NLP, OpenCV\n• Backend & DBs: FastAPI, Flask, PostgreSQL, Supabase, ChromaDB, FAISS, Pinecone\n• Data & Core: C++, SQL, Pandas, NumPy, Matplotlib, Power BI, Streamlit.'
+    a: '• Generative AI: RAG, LangGraph, LlamaIndex, AutoGen, LangSmith, Embeddings, Semantic Search, Prompt Engineering\n• AI/ML: Python, PyTorch, TensorFlow, Keras, Scikit-Learn, Hugging Face, NLP, OpenCV\n• Backend & DBs: FastAPI, Flask, PostgreSQL, Supabase, ChromaDB, FAISS, Pinecone\n• Data & Core: C++ (200+ LeetCode problems), SQL, Pandas, NumPy, Matplotlib, Power BI, Streamlit.'
   },
   {
-    q: 'Show his projects',
-    a: '1. DocChat AI / RAG System (FastAPI, ChromaDB, PostgreSQL, Groq)\n2. Multi-Agent Research System (LangGraph, Agentic AI, Python)\n3. AI Data Explorer (Live Streamlit automated EDA app)\n4. Info Trunk (Knowledge platform with 1K+ visitors & 5.5K+ page views)\n5. Fake News Detection (NLP, TF-IDF, Logistic Regression & Passive Aggressive Classifier).'
+    q: 'Show his 7 featured projects',
+    a: '1. DocChat AI / RAG System (FastAPI, ChromaDB, PostgreSQL, Groq)\n2. Khoj AI — Multi-Agent Research System (Live: khojai.streamlit.app)\n3. AI Data Explorer (Live: aidataexplorer.streamlit.app)\n4. Indian Startup Ecosystem & Funding Analysis (Live: startupanalysisindia.streamlit.app)\n5. CardMakers — Digital ID & Library Solution (Live WIP: cardmakers.vercel.app)\n6. Info Trunk (1K+ visitors & 5.5K+ page views)\n7. Fake News Detection System (NLP, TF-IDF, Flask).'
   },
   {
-    q: 'What is his experience & education?',
-    a: '• Experience: Web Developer & Tester Intern at ITM University, Gwalior (Jan 2026 – Present), contributing via AI-assisted development, SRS analysis, and functional/performance testing.\n• Education: B.Tech CSE (Data Science) at ITM University, Gwalior (2023–2027), currently in 6th Semester with a 7.68 CGPA (8.53 SGPA in Semester VI).'
+    q: 'What are his achievements & education?',
+    a: '• Achievements: Solved 200+ LeetCode Problems in C++, 5th Place in ScandiBytes Mini AI Challenge, and GSSOC 2025 Contributor.\n• Experience: Web Developer & Tester Intern at ITM University, Gwalior (Jan 2026 – Present).\n• Education: B.Tech CSE (Data Science) at ITM University, Gwalior (2023–2027), 6th Semester with a 7.53 CGPA (79.14% in Semester V).'
   },
   {
     q: 'How can I contact him?',
-    a: 'You can explore his code directly on GitHub (github.com/suyashmudgal), use the interactive Contact section at the bottom of this portfolio, or view/download his structured resume right from the navigation bar.'
+    a: 'You can explore his code directly on GitHub (github.com/suyashmudgal), launch his live deployments on Streamlit and Vercel, use the Contact section at the bottom of this portfolio, or view/download his resume from the top navigation bar.'
   }
 ];
 
@@ -731,9 +845,9 @@ function HeroArchitectureVisual({ onSelectProject }) {
       ]
     },
     agents: {
-      name: 'LangGraph • Multi-Agent Research',
+      name: 'Khoj AI • 4-Stage Multi-Agent Research',
       projectRef: 'multi-agent-research',
-      status: 'Python + LangGraph + Agentic AI',
+      status: 'LangGraph + LangChain + Tavily + Streamlit',
       nodes: [
         {
           id: 'query',
@@ -744,31 +858,31 @@ function HeroArchitectureVisual({ onSelectProject }) {
         },
         {
           id: 'research',
-          title: 'Specialized Research Agents',
+          title: 'Specialized Research Agents (Tavily)',
           detail: 'Autonomous agents gather domain-specific evidence in parallel',
           metric: 'Multi-Agent',
           color: 'text-indigo-400'
         },
         {
           id: 'process',
-          title: 'Information Processing Node',
+          title: 'Information Processing & Verification',
           detail: 'Validates relevance, removes redundancy, structures context',
           metric: 'State Graph',
           color: 'text-amber-400'
         },
         {
           id: 'synthesis',
-          title: 'Synthesis & Final Report',
-          detail: 'Compiles verified findings into structured technical output',
-          metric: 'Synthesized',
+          title: 'Citation-Backed Synthesis Report',
+          detail: 'Compiles verified findings into structured output on khojai.streamlit.app',
+          metric: 'Live App',
           color: 'text-emerald-400'
         }
       ],
       logs: [
-        '[GRAPH] State initialized: User Query -> Research Agents dispatched',
-        '[AGENT_1] Completed domain retrieval & context extraction',
-        '[PROCESS] Information Processing node refined key evidence blocks',
-        '[SYNTHESIS] Final structured research output compiled successfully.'
+        '[KHOJ_AI] State initialized: User Query -> Research Agents dispatched',
+        '[TAVILY_AGENT] Completed live web retrieval & source extraction',
+        '[PROCESS] Information Processing node verified key evidence blocks',
+        '[SYNTHESIS] Final citation-backed report rendered on Streamlit UI.'
       ]
     }
   };
@@ -1529,7 +1643,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedSkillCategory, setSelectedSkillCategory] = useState('all');
   const [skillSearch, setSkillSearch] = useState('');
-  const [selectedProjectFilter, setSelectedProjectFilter] = useState('All');
+  const [selectedProjectFilter, setSelectedProjectFilter] = useState('All Projects');
   const [activeProjectModal, setActiveProjectModal] = useState(null);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
@@ -1553,7 +1667,7 @@ export default function App() {
     document.title = 'Suyash Mudgal | AI/ML Engineer & Generative AI Developer';
   }, []);
 
-  // Fetch Authentic Public GitHub Profile & Repositories
+  // Fetch Authentic Public GitHub Profile & up to 100 Repositories for Live Repo Matching
   useEffect(() => {
     let isMounted = true;
     async function fetchGithubData() {
@@ -1561,7 +1675,7 @@ export default function App() {
         setGithubLoading(true);
         const [userRes, reposRes] = await Promise.all([
           fetch('https://api.github.com/users/suyashmudgal'),
-          fetch('https://api.github.com/users/suyashmudgal/repos?sort=updated&per_page=6')
+          fetch('https://api.github.com/users/suyashmudgal/repos?sort=updated&per_page=100')
         ]);
 
         if (userRes.ok && isMounted) {
@@ -1587,6 +1701,45 @@ export default function App() {
     };
   }, []);
 
+  // Dynamically resolve exact GitHub repository URLs for projects using fetched repos
+  const resolvedProjects = useMemo(() => {
+    return PROJECTS_DATA.map((project) => {
+      // Keep explicit exact links for RAG and Multi-agent-research-system-main
+      if (
+        project.id === 'docchat-rag' ||
+        project.id === 'multi-agent-research' ||
+        !project.repoKeywords
+      ) {
+        return project;
+      }
+
+      const matchedRepo = githubRepos.find((repo) => {
+        const repoName = (repo.name || '').toLowerCase();
+        const repoDesc = (repo.description || '').toLowerCase();
+        const homepage = (repo.homepage || '').toLowerCase();
+
+        // Check if liveDemo matches repo homepage
+        if (project.liveDemo && homepage && homepage.includes(project.liveDemo.replace('https://', '').replace('/', ''))) {
+          return true;
+        }
+
+        return project.repoKeywords.some(
+          (kw) => repoName.includes(kw.toLowerCase()) || repoDesc.includes(kw.toLowerCase())
+        );
+      });
+
+      if (matchedRepo && matchedRepo.html_url) {
+        return {
+          ...project,
+          github: matchedRepo.html_url,
+          matchedRepoName: matchedRepo.name
+        };
+      }
+
+      return project;
+    });
+  }, [githubRepos]);
+
   // Filtered Skill Categories
   const filteredSkillCategories = useMemo(() => {
     return SKILL_CATEGORIES.filter((cat) => {
@@ -1602,12 +1755,11 @@ export default function App() {
     });
   }, [selectedSkillCategory, skillSearch]);
 
-  // Filtered Projects
-  const projectCategories = ['All', 'Generative AI & Backend', 'Agentic AI', 'Data Science & Analytics', 'Product Engineering', 'NLP & Machine Learning'];
+  // Filtered Projects by Category Tabs
   const filteredProjects = useMemo(() => {
-    if (selectedProjectFilter === 'All') return PROJECTS_DATA;
-    return PROJECTS_DATA.filter((p) => p.category === selectedProjectFilter);
-  }, [selectedProjectFilter]);
+    if (selectedProjectFilter === 'All Projects') return resolvedProjects;
+    return resolvedProjects.filter((p) => p.category === selectedProjectFilter);
+  }, [selectedProjectFilter, resolvedProjects]);
 
   const scrollToSection = (id) => {
     setMobileMenuOpen(false);
@@ -2138,35 +2290,52 @@ export default function App() {
             4. FEATURED PROJECTS SECTION
         ========================================== */}
         <section id="projects" className="py-16 border-t border-slate-800/70">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-sky-400">
                 <Layers className="w-3.5 h-3.5" /> 03 / Featured Systems & Engineering Work
               </div>
               <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1">
-                Production-Focused AI & Data Projects
+                Categorized AI, Data Analytics & Product Portfolio
               </h2>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Click <span className="text-sky-400 font-medium">View Architecture & Details</span> on any project to inspect its system design, pipeline flow, and implementation specs.
+                Filter across <span className="text-slate-200 font-medium">7 real-world systems</span> or click{' '}
+                <span className="text-sky-400 font-medium">View Details & Architecture</span> to inspect system design and live deployments.
               </p>
             </div>
 
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-1.5">
-              {projectCategories.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedProjectFilter(cat)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition ${
-                    selectedProjectFilter === cat
-                      ? 'bg-sky-500 text-slate-950 font-semibold'
-                      : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+            {/* Interactive Category Filter Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {PROJECT_CATEGORY_TABS.map((cat) => {
+                const count =
+                  cat === 'All Projects'
+                    ? resolvedProjects.length
+                    : resolvedProjects.filter((p) => p.category === cat).length;
+                const isSelected = selectedProjectFilter === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedProjectFilter(cat)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-medium transition flex items-center gap-1.5 ${
+                      isSelected
+                        ? 'bg-sky-500 text-slate-950 font-bold shadow-lg shadow-sky-500/20'
+                        : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white'
+                    }`}
+                  >
+                    <span>{cat}</span>
+                    <span
+                      className={`px-1.5 py-0.2 rounded-md text-[10px] font-mono ${
+                        isSelected
+                          ? 'bg-slate-950/25 text-slate-950 font-bold'
+                          : 'bg-slate-950 text-slate-400'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -2184,9 +2353,21 @@ export default function App() {
                       <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-sky-500/15 text-sky-300 border border-sky-500/30">
                         0{idx + 1} • {project.category}
                       </span>
-                      <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-950 text-slate-300 border border-slate-800">
+                      <span
+                        className={`px-2.5 py-1 rounded-md text-xs font-mono border ${
+                          project.statusNote
+                            ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                            : 'bg-slate-950 text-slate-300 border-slate-800'
+                        }`}
+                      >
                         {project.badge}
                       </span>
+                      {project.liveDemo && (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Live Preview Available
+                        </span>
+                      )}
                       <span className="text-xs font-mono text-slate-400">{project.date}</span>
                     </div>
 
@@ -2206,7 +2387,7 @@ export default function App() {
                     {/* Architectural Highlight Callout */}
                     {project.highlightNote && (
                       <div className="p-3.5 rounded-xl bg-slate-950/90 border border-sky-500/25 flex items-start gap-2.5">
-                        <Lock className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                        <Sparkles className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                         <p className="text-xs text-sky-200 leading-relaxed">
                           {project.highlightNote}
                         </p>
@@ -2253,6 +2434,18 @@ export default function App() {
                         View Details & Architecture
                       </button>
 
+                      {project.liveDemo && (
+                        <a
+                          href={project.liveDemo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs sm:text-sm font-semibold transition"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Live Preview
+                        </a>
+                      )}
+
                       {project.github && (
                         <a
                           href={project.github}
@@ -2261,7 +2454,9 @@ export default function App() {
                           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800 text-xs sm:text-sm font-medium transition"
                         >
                           <Github className="w-4 h-4" />
-                          GitHub
+                          {project.matchedRepoName
+                            ? `Repo (${project.matchedRepoName})`
+                            : 'GitHub Repo'}
                         </a>
                       )}
 
@@ -2274,18 +2469,6 @@ export default function App() {
                         >
                           <Server className="w-3.5 h-3.5" />
                           /backend
-                        </a>
-                      )}
-
-                      {project.liveDemo && (
-                        <a
-                          href={project.liveDemo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs sm:text-sm font-semibold transition"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Live Demo
                         </a>
                       )}
                     </div>
@@ -2640,8 +2823,8 @@ export default function App() {
           </div>
 
           {/* Repositories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {githubRepos.slice(0, 4).map((repo) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {githubRepos.slice(0, 6).map((repo) => (
               <a
                 key={repo.id || repo.name}
                 href={repo.html_url || PERSONAL_INFO.github}
@@ -2651,7 +2834,7 @@ export default function App() {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 font-mono text-sm font-bold text-sky-400 group-hover:text-sky-300">
+                    <div className="flex items-center gap-2 font-mono text-sm font-bold text-sky-400 group-hover:text-sky-300 min-w-0">
                       <FolderGit2 className="w-4 h-4 shrink-0" />
                       <span className="truncate">{repo.name}</span>
                     </div>
@@ -2659,14 +2842,14 @@ export default function App() {
                   </div>
                   <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed line-clamp-2">
                     {repo.description ||
-                      'AI/ML and software engineering repository by Suyash Mudgal.'}
+                      'AI/ML, Data Science, and software engineering repository by Suyash Mudgal.'}
                   </p>
                 </div>
 
                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-800/80 text-xs font-mono text-slate-400">
                   <span className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-sky-400" />
-                    {repo.language || 'Python'}
+                    {repo.language || 'Python / JS'}
                   </span>
                   <span>View Repository →</span>
                 </div>
