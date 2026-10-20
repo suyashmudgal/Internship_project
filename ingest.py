@@ -12,6 +12,7 @@ import argparse
 import os
 import sys
 
+from app import config
 from app.ingestion.pipeline import run_ingestion
 
 

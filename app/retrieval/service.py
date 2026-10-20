@@ -48,23 +48,38 @@ def _get_vectorstore() -> Chroma:
                 "python ingest.py --file <path-to-pdf>"
             )
 
-        embeddings = HuggingFaceEmbeddings(
-            model_name=config.EMBEDDING_MODEL,
-        )
-        _vectorstore = Chroma(
-            collection_name=config.CHROMA_COLLECTION,
-            embedding_function=embeddings,
-            persist_directory=persist_dir,
-        )
+        import chromadb
+        from chromadb.config import Settings
 
-        # Verify the collection has documents
-        if _vectorstore._collection.count() == 0:
-            _vectorstore = None
+        client_settings = Settings(anonymized_telemetry=False, is_persistent=True)
+        chroma_client = chromadb.PersistentClient(path=persist_dir, settings=client_settings)
+
+        # Check if collection exists and has documents before loading embeddings
+        existing_cols = [c.name for c in chroma_client.list_collections()]
+        if config.CHROMA_COLLECTION not in existing_cols:
+            raise RuntimeError(
+                "Vector store collection does not exist. "
+                "Please ingest at least one PDF first: "
+                "python ingest.py --file <path-to-pdf>"
+            )
+
+        col = chroma_client.get_collection(config.CHROMA_COLLECTION)
+        if col.count() == 0:
             raise RuntimeError(
                 "Vector store collection is empty. "
                 "Please ingest at least one PDF first: "
                 "python ingest.py --file <path-to-pdf>"
             )
+
+        embeddings = HuggingFaceEmbeddings(
+            model_name=config.EMBEDDING_MODEL,
+            encode_kwargs={"batch_size": 1},
+        )
+        _vectorstore = Chroma(
+            client=chroma_client,
+            collection_name=config.CHROMA_COLLECTION,
+            embedding_function=embeddings,
+        )
 
     return _vectorstore
 

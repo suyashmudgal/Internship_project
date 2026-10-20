@@ -11,14 +11,12 @@ import hashlib
 import os
 from typing import Any, TypedDict
 
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langgraph.graph import END, START, StateGraph
-
 from app import config
 
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.vectorstores import Chroma
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langgraph.graph import END, START, StateGraph
 
 # ---------------------------------------------------------------------------
 # State
@@ -28,43 +26,38 @@ class IngestionState(TypedDict):
     """Typed state passed between LangGraph nodes."""
 
     file_path: str
-    """Absolute path to the source PDF."""
-
     documents: list[Any]
-    """Raw LangChain Document objects from the PDF loader (one per page)."""
-
     chunks: list[Any]
-    """Split Document objects with preserved metadata."""
-
     collection_name: str
-    """ChromaDB collection name."""
-
     persist_directory: str
-    """Path to the ChromaDB persistence directory."""
-
     num_pages: int
-    """Number of pages loaded from the PDF."""
-
     num_chunks: int
-    """Number of chunks after splitting."""
-
     embedding_model: str
-    """Name of the HuggingFace embedding model used."""
 
 
 # ---------------------------------------------------------------------------
-# Shared embedding model (initialized once)
+# Shared clients (Chroma collection must be initialized before PyTorch on Windows)
 # ---------------------------------------------------------------------------
 
-_embeddings: HuggingFaceEmbeddings | None = None
+_chroma_client: Any = None
+_chroma_col: Any = None
+_embeddings: Any = None
 
 
-def _get_embeddings() -> HuggingFaceEmbeddings:
+def _get_chroma_collection(persist_dir: str | None = None, collection_name: str | None = None):
+    """Return the cached chromadb Collection initialized at startup in config."""
+    return config.chroma_collection
+
+
+def _get_embeddings() -> Any:
     """Return a cached HuggingFaceEmbeddings instance."""
     global _embeddings
     if _embeddings is None:
+        from langchain_huggingface import HuggingFaceEmbeddings
+
         _embeddings = HuggingFaceEmbeddings(
             model_name=config.EMBEDDING_MODEL,
+            encode_kwargs={"batch_size": 1},
         )
     return _embeddings
 
@@ -193,12 +186,7 @@ def _generate_chunk_id(chunk, file_path: str) -> str:
 
 
 def store(state: IngestionState) -> dict:
-    """Persist chunks into ChromaDB with their embeddings.
-
-    Uses LangChain's Chroma integration. Generates deterministic IDs
-    and embeds chunks, adding any new chunks directly to avoid duplicate
-    entries and Windows-specific Rust upsert issues.
-    """
+    """Persist chunks into ChromaDB with their embeddings."""
     chunks = state["chunks"]
     file_path = state["file_path"]
     persist_dir = state["persist_directory"]
@@ -217,22 +205,21 @@ def store(state: IngestionState) -> dict:
     vectors = embeddings.embed_documents(texts)
 
     try:
-        import chromadb
-        from chromadb.config import Settings
+        col = _get_chroma_collection(persist_dir, collection)
 
-        client_settings = Settings(anonymized_telemetry=False, is_persistent=True)
-        client = chromadb.PersistentClient(path=persist_dir, settings=client_settings)
-        col = client.get_or_create_collection(collection)
-        try:
+        existing_ids = set(col.get(include=[])["ids"])
+        new_indices = [i for i, chunk_id in enumerate(ids) if chunk_id not in existing_ids]
+        if new_indices:
+            sub_ids = [ids[i] for i in new_indices]
+            sub_texts = [texts[i] for i in new_indices]
+            sub_metadatas = [metadatas[i] for i in new_indices]
+            sub_vectors = [vectors[i] for i in new_indices]
             col.add(
-                ids=ids,
-                documents=texts,
-                metadatas=metadatas,
-                embeddings=vectors,
+                ids=sub_ids,
+                documents=sub_texts,
+                metadatas=sub_metadatas,
+                embeddings=sub_vectors,
             )
-        except Exception:
-            # If IDs already exist, continue safely
-            pass
     except Exception as exc:
         raise RuntimeError(f"Failed to persist to vector store: {exc}") from exc
 
@@ -279,6 +266,8 @@ def build_ingestion_graph() -> Any:
 def run_ingestion(file_path: str) -> IngestionState:
     """Run the full ingestion pipeline on a PDF file.
 
+    Executes the 4-stage pipeline: load -> split -> embed -> store.
+
     Args:
         file_path: Path to the PDF file to ingest.
 
@@ -287,7 +276,7 @@ def run_ingestion(file_path: str) -> IngestionState:
     """
     abs_path = os.path.abspath(file_path)
 
-    initial_state: IngestionState = {
+    state: IngestionState = {
         "file_path": abs_path,
         "documents": [],
         "chunks": [],
@@ -295,9 +284,12 @@ def run_ingestion(file_path: str) -> IngestionState:
         "persist_directory": config.CHROMA_PERSIST_DIR,
         "num_pages": 0,
         "num_chunks": 0,
-        "embedding_model": "",
+        "embedding_model": config.EMBEDDING_MODEL,
     }
 
-    pipeline = build_ingestion_graph()
-    result = pipeline.invoke(initial_state)
-    return result
+    state.update(load(state))
+    state.update(split(state))
+    state.update(embed(state))
+    state.update(store(state))
+
+    return state
